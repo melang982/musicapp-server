@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "streaming demo - server",
+  "main": "app.js",
+  "dependencies": {
+    "@prisma/client": "^2.30.2",
+    "apollo-server": "^3.3.0",
+    "express": "^4.17.1",
+    "graphql": "^15.5.2",
+    "socket.io": "^4.1.3",
+    "socket.io-stream": "^0.9.1"
+  },
+  "devDependencies": {
+    "prisma": "^2.30.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "melang",
+  "license": "ISC"
+}
