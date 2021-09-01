@@ -1,5 +1,6 @@
 const Query = require('./resolvers/Query')
 const Artist = require('./resolvers/Artist')
+const Album = require('./resolvers/Album')
 
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +12,8 @@ const { ApolloServer } = require('apollo-server');
 
 const resolvers = {
   Query,
-  Artist
+  Artist,
+  Album
 };
 
 const apolloServer = new ApolloServer({
@@ -35,6 +37,7 @@ const express = require('express');
 
 
 const app = express();
+app.use(express.static('public'))
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -48,9 +51,10 @@ io.on('connection', (client) => {
   console.log('a user connected');
 
   const stream = ss.createStream();
-  client.on('track', () => {
-    console.log('track');
-    const filePath = path.resolve(__dirname, './private', './track.wav');
+  client.on('track', (id) => {
+    console.log('track ' + id);
+    const fileName = id + '.wav';
+    const filePath = path.resolve(__dirname, 'private', fileName);
 
     const stat = fs.statSync(filePath);
     const readStream = fs.createReadStream(filePath);

@@ -6,10 +6,18 @@ type Query {
 type Artist {
   id: ID!
   name: String!
-  albums: [Album]
+  albums: [Album!]!
 }
 
 type Album {
   id: ID
   title: String
+  year: Int
+  tracks: [Track!]!
+}
+
+type Track {
+  id: ID
+  title: String
+  duration: Int
 }

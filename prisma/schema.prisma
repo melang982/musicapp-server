@@ -19,6 +19,7 @@ model Artist {
 model Album {
   id         Int        @id @default(autoincrement())
   title      String
+  year       Int?
   artistId   Int
   artist     Artist       @relation(fields: [artistId], references: [id])
   tracks   Track[]
