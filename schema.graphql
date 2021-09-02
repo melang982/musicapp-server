@@ -1,5 +1,5 @@
 type Query {
-  artists: [Artist!]!
+  artists(filter: String): [Artist!]!
   artist(id: Int!): Artist
 }
 
