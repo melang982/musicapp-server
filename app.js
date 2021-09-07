@@ -1,35 +1,43 @@
 const Query = require('./resolvers/Query')
 const Artist = require('./resolvers/Artist')
 const Album = require('./resolvers/Album')
+const Track = require('./resolvers/Track')
 
 const fs = require('fs');
 const path = require('path');
 
-const { PrismaClient } = require('@prisma/client')
+const {
+  PrismaClient
+} = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const { ApolloServer } = require('apollo-server');
+const {
+  ApolloServer
+} = require('apollo-server');
 
 const resolvers = {
   Query,
   Artist,
-  Album
+  Album,
+  Track
 };
 
 const apolloServer = new ApolloServer({
   typeDefs: fs.readFileSync(
-      path.join(__dirname, 'schema.graphql'),
-      'utf8'
-    ),
-resolvers,
-context: {
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
+  resolvers,
+  context: {
     prisma,
   }
 })
 
 apolloServer
   .listen(4000)
-  .then(({ url }) =>
+  .then(({
+      url
+    }) =>
     console.log(`Apollo Server is running on ${url}`)
   );
 
@@ -40,7 +48,9 @@ const app = express();
 app.use(express.static('public'))
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const {
+  Server
+} = require("socket.io");
 const io = new Server(server);
 
 
@@ -60,7 +70,9 @@ io.on('connection', (client) => {
     const readStream = fs.createReadStream(filePath);
     // pipe stream with response stream
     readStream.pipe(stream);
-    ss(client).emit('track-stream', stream, { stat });
+    ss(client).emit('track-stream', stream, {
+      stat
+    });
   });
 });
 
