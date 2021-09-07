@@ -2,6 +2,11 @@ const Query = require('./resolvers/Query')
 const Artist = require('./resolvers/Artist')
 const Album = require('./resolvers/Album')
 const Track = require('./resolvers/Track')
+const Mutation = require('./resolvers/Mutation')
+
+const {
+  getUserId
+} = require('./utils');
 
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +24,8 @@ const resolvers = {
   Query,
   Artist,
   Album,
-  Track
+  Track,
+  Mutation
 };
 
 const apolloServer = new ApolloServer({
@@ -28,8 +34,14 @@ const apolloServer = new ApolloServer({
     'utf8'
   ),
   resolvers,
-  context: {
-    prisma,
+  context: ({
+    req
+  }) => {
+    return {
+      ...req,
+      prisma,
+      userId: req && req.headers.authorization ? getUserId(req) : null
+    }
   }
 })
 

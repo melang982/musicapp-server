@@ -31,4 +31,21 @@ model Track {
   albumId   Int
   album     Album       @relation(fields: [albumId], references: [id])
   duration   Int
+  playlists Playlist[]
+}
+
+model Playlist {
+  id         Int        @id @default(autoincrement())
+  title      String
+  tracks     Track[]
+  createdBy    User?    @relation(fields: [createdById], references: [id])
+  createdById  Int?
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  playlists     Playlist[]
 }
