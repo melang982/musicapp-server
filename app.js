@@ -2,29 +2,27 @@ const Query = require('./resolvers/Query')
 const Artist = require('./resolvers/Artist')
 const Album = require('./resolvers/Album')
 const Track = require('./resolvers/Track')
+const Playlist = require('./resolvers/Playlist')
+const User = require('./resolvers/User')
 const Mutation = require('./resolvers/Mutation')
 
-const {
-  getUserId
-} = require('./utils');
+const { getUserId } = require('./utils');
 
 const fs = require('fs');
 const path = require('path');
 
-const {
-  PrismaClient
-} = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const {
-  ApolloServer
-} = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 
 const resolvers = {
   Query,
   Artist,
   Album,
   Track,
+  Playlist,
+  User,
   Mutation
 };
 
@@ -34,9 +32,7 @@ const apolloServer = new ApolloServer({
     'utf8'
   ),
   resolvers,
-  context: ({
-    req
-  }) => {
+  context: ({ req }) => {
     return {
       ...req,
       prisma,
@@ -47,9 +43,7 @@ const apolloServer = new ApolloServer({
 
 apolloServer
   .listen(4000)
-  .then(({
-      url
-    }) =>
+  .then(({ url }) =>
     console.log(`Apollo Server is running on ${url}`)
   );
 
@@ -60,9 +54,7 @@ const app = express();
 app.use(express.static('public'))
 const http = require('http');
 const server = http.createServer(app);
-const {
-  Server
-} = require("socket.io");
+const { Server } = require('socket.io');
 const io = new Server(server);
 
 
@@ -82,9 +74,7 @@ io.on('connection', (client) => {
     const readStream = fs.createReadStream(filePath);
     // pipe stream with response stream
     readStream.pipe(stream);
-    ss(client).emit('track-stream', stream, {
-      stat
-    });
+    ss(client).emit('track-stream', stream, { stat });
   });
 });
 

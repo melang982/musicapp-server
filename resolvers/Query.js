@@ -52,9 +52,31 @@ function artist(parent, args, context) {
   })
 }
 
+function playlist(parent, args, context) {
+  return context.prisma.playlist.findUnique({
+    where: {
+      id: args.id
+    }
+  })
+}
+
+function user(parent, args, context) {
+  const { userId } = context;
+
+  if (userId)
+    return context.prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    });
+  else return null;
+}
+
 module.exports = {
   artists,
   artist,
+  playlist,
+  user,
   albums,
   tracks
 }

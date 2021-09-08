@@ -1,6 +1,8 @@
 type Query {
   artists(filter: String): [Artist!]!
   artist(id: Int!): Artist
+  playlist(id: Int!): Playlist
+  user(name: String!): User
   albums(filter: String): [Album!]!
   tracks(filter: String): [Track!]!
 }
@@ -30,6 +32,7 @@ type Track {
 type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
+  createPlaylist(title: String): Playlist
 }
 
 type AuthPayload {
@@ -47,5 +50,6 @@ type User {
 type Playlist {
   id: ID!
   title: String!
+  tracks: [Track!]!
   createdBy: User
 }
