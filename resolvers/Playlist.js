@@ -6,7 +6,15 @@ function tracks(parent, args, context) {
   }).tracks()
 }
 
+function createdBy(parent, args, context) {
+  return context.prisma.user.findUnique({
+    where: {
+      id: parent.createdById
+    }
+  })
+}
 
 module.exports = {
-  tracks
+  tracks,
+  createdBy
 }

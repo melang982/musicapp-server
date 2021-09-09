@@ -70,11 +70,16 @@ io.on('connection', (client) => {
     const fileName = id + '.wav';
     const filePath = path.resolve(__dirname, 'private', fileName);
 
-    const stat = fs.statSync(filePath);
-    const readStream = fs.createReadStream(filePath);
-    // pipe stream with response stream
-    readStream.pipe(stream);
-    ss(client).emit('track-stream', stream, { stat });
+    try {
+      const stat = fs.statSync(filePath);
+      const readStream = fs.createReadStream(filePath);
+
+      // pipe stream with response stream
+      readStream.pipe(stream);
+      ss(client).emit('track-stream', stream, { stat });
+    } catch (error) {
+      console.error(error);
+    }
   });
 });
 
