@@ -52,6 +52,14 @@ function artist(parent, args, context) {
   })
 }
 
+function album(parent, args, context) {
+  return context.prisma.album.findUnique({
+    where: {
+      id: args.id
+    }
+  })
+}
+
 function playlist(parent, args, context) {
   return context.prisma.playlist.findUnique({
     where: {
@@ -75,6 +83,7 @@ function user(parent, args, context) {
 module.exports = {
   artists,
   artist,
+  album,
   playlist,
   user,
   albums,

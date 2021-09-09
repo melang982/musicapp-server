@@ -6,18 +6,15 @@ function tracks(parent, args, context) {
   }).tracks()
 }
 
-/*async function artist(parent, args, context) {
-  const artist = await context.prisma.artist.findUnique({
+function artist(parent, args, context) {
+  return context.prisma.artist.findUnique({
     where: {
       id: parent.artistId
     }
-  });
-
-  console.log(artist.name);
-  return artist.name;
-}*/
+  })
+}
 
 module.exports = {
   tracks,
-  //artist
+  artist
 }
