@@ -25,7 +25,7 @@ type Track {
   id: ID
   title: String
   duration: Int
-  artist: String
+  artist: Artist!
   album: Album!
 }
 

@@ -20,7 +20,7 @@ async function artist(parent, args, context) {
     }
   });
 
-  return trackArtist.name;
+  return trackArtist;
 }
 
 module.exports = {
