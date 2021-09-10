@@ -11,8 +11,8 @@ generator client {
 }
 
 model Artist {
-  id      Int      @id @default(autoincrement())
-  name    String
+  id       Int      @id @default(autoincrement())
+  name     String
   albums   Album[]
 }
 
@@ -22,30 +22,31 @@ model Album {
   year       Int?
   artistId   Int
   artist     Artist       @relation(fields: [artistId], references: [id])
-  tracks   Track[]
+  tracks     Track[]
+  color      String?
 }
 
 model Track {
   id         Int        @id @default(autoincrement())
   title      String
-  albumId   Int
-  album     Album       @relation(fields: [albumId], references: [id])
+  albumId    Int
+  album      Album       @relation(fields: [albumId], references: [id])
   duration   Int
-  playlists Playlist[]
+  playlists  Playlist[]
 }
 
 model Playlist {
-  id         Int        @id @default(autoincrement())
-  title      String
-  tracks     Track[]
+  id           Int        @id @default(autoincrement())
+  title        String
+  tracks       Track[]
   createdBy    User?    @relation(fields: [createdById], references: [id])
   createdById  Int?
 }
 
 model User {
   id         Int        @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  playlists     Playlist[]
+  name       String
+  email      String   @unique
+  password   String
+  playlists  Playlist[]
 }

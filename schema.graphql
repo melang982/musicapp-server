@@ -21,6 +21,7 @@ type Album {
   year: Int
   artist: Artist
   tracks: [Track!]!
+  color: String
 }
 
 type Track {
