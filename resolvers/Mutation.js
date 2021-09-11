@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { APP_SECRET, getUserId } = require('../utils')
+const { APP_SECRET, getUserId, addToBlackList } = require('../utils')
 
 async function signup(parent, args, context, info) {
 
@@ -10,14 +10,19 @@ async function signup(parent, args, context, info) {
 
   const token = jwt.sign({ userId: user.id }, APP_SECRET)
 
-  return {
-    token,
-    user
-  }
+  const options = {
+    maxAge: 1000 * 60 * 60 * 24, //expires in a day
+    httpOnly: true, // cookie is only accessible by the server
+    //secure: true, //on HTTPS
+  };
+
+  const cookie = context.res.cookie('token', token, options);
+
+  return user;
 }
 
 async function login(parent, args, context, info) {
-
+  console.log('LOGIN');
   const user = await context.prisma.user.findUnique({ where: { email: args.email } })
 
   if (!user) {
@@ -30,12 +35,38 @@ async function login(parent, args, context, info) {
     throw new Error('Invalid password')
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+  const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
-  return { token, user }
+  const options = {
+    maxAge: 1000 * 60 * 60 * 24, //expires in a day
+    httpOnly: true, // cookie is only accessible by the server
+    //secure: true, //on HTTPS
+  };
+
+  const cookie = context.res.cookie('token', token, options);
+  console.log(user);
+  return user;
+}
+
+function logout(parent, args, context, info) {
+  console.log('LOGOUT');
+  const token = context.cookies.token;
+  if (token) addToBlackList(token);
+
+  const options = {
+    maxAge: 1000 * 60 * 60 * 24, //expires in a day
+    httpOnly: true, // cookie is only accessible by the server
+    //secure: true, //on HTTPS
+  };
+  const cookie = context.res.cookie('token', '', options);
+
+  return 'success';
 }
 
 async function createPlaylist(parent, args, context, info) {
+  console.log('CREATE PLAYLIST');
+  //console.log(context.cookies);
+
   const { userId } = context;
   const playlists = await context.prisma.user.findUnique({ where: { id: userId } }).playlists();
 
@@ -52,5 +83,6 @@ async function createPlaylist(parent, args, context, info) {
 module.exports = {
   signup,
   login,
+  logout,
   createPlaylist
 }

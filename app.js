@@ -14,7 +14,9 @@ const path = require('path');
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const resolvers = {
   Query,
@@ -26,63 +28,68 @@ const resolvers = {
   Mutation
 };
 
-const apolloServer = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    path.join(__dirname, 'schema.graphql'),
-    'utf8'
-  ),
-  resolvers,
-  context: ({ req }) => {
-    return {
-      ...req,
-      prisma,
-      userId: req && req.headers.authorization ? getUserId(req) : null
+async function startServer() {
+  const app = express();
+  app.use(cookieParser());
+  app.use(express.static('public'))
+
+  const apolloServer = new ApolloServer({
+    typeDefs: fs.readFileSync(
+      path.join(__dirname, 'schema.graphql'),
+      'utf8'
+    ),
+    resolvers,
+    context: ({ req }) => {
+      return {
+        ...req,
+        prisma,
+        userId: req && req.cookies ? getUserId(req.cookies.token) : null
+        //userId: req && req.headers.authorization ? getUserId(req) : null
+      }
     }
-  }
-})
+  })
 
-apolloServer
-  .listen(4000)
-  .then(({ url }) =>
-    console.log(`Apollo Server is running on ${url}`)
-  );
+  await apolloServer.start();
 
-const express = require('express');
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+  };
+  apolloServer.applyMiddleware({ app, cors: corsOptions, path: '/graphql' }); //, path: '/graphql'
 
+  const http = require('http');
+  const server = http.createServer(app);
 
-const app = express();
-app.use(express.static('public'))
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(server);
+  const { Server } = require('socket.io');
+  const io = new Server(server);
 
+  const ss = require('socket.io-stream');
 
-const ss = require('socket.io-stream');
+  io.on('connection', (client) => {
+    console.log('a user connected');
 
+    const stream = ss.createStream();
+    client.on('track', (id) => {
+      console.log('track ' + id);
+      const fileName = id + '.wav';
+      const filePath = path.resolve(__dirname, 'private', fileName);
 
-io.on('connection', (client) => {
-  console.log('a user connected');
+      try {
+        const stat = fs.statSync(filePath);
+        const readStream = fs.createReadStream(filePath);
 
-  const stream = ss.createStream();
-  client.on('track', (id) => {
-    console.log('track ' + id);
-    const fileName = id + '.wav';
-    const filePath = path.resolve(__dirname, 'private', fileName);
-
-    try {
-      const stat = fs.statSync(filePath);
-      const readStream = fs.createReadStream(filePath);
-
-      // pipe stream with response stream
-      readStream.pipe(stream);
-      ss(client).emit('track-stream', stream, { stat });
-    } catch (error) {
-      console.error(error);
-    }
+        // pipe stream with response stream
+        readStream.pipe(stream);
+        ss(client).emit('track-stream', stream, { stat });
+      } catch (error) {
+        console.error(error);
+      }
+    });
   });
-});
 
-server.listen(3001, () => {
-  console.log('listening on *:3001');
-});
+  server.listen(4000, () => {
+    console.log('listening on *:4000');
+  });
+}
+
+startServer();
