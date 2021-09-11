@@ -37,10 +37,11 @@ async function login(parent, args, context, info) {
 
 async function createPlaylist(parent, args, context, info) {
   const { userId } = context;
+  const playlists = await context.prisma.user.findUnique({ where: { id: userId } }).playlists();
 
   const playlist = await context.prisma.playlist.create({
     data: {
-      title: 'My New Playlist',
+      title: 'My Playlist #' + (playlists.length + 1),
       createdBy: { connect: { id: userId } }
     }
   });
