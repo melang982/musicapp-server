@@ -55,7 +55,7 @@ async function startServer() {
     origin: 'http://localhost:3000',
     credentials: true
   };
-  apolloServer.applyMiddleware({ app, cors: corsOptions, path: '/graphql' }); //, path: '/graphql'
+  apolloServer.applyMiddleware({ app, cors: corsOptions, path: '/graphql' });
 
   const http = require('http');
   const server = http.createServer(app);

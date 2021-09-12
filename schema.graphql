@@ -11,6 +11,7 @@ type Query {
 type Artist {
   id: ID!
   name: String!
+  description: String
   albums: [Album!]!
   tracks: [Track!]!
 }

@@ -11,9 +11,10 @@ generator client {
 }
 
 model Artist {
-  id       Int      @id @default(autoincrement())
-  name     String
-  albums   Album[]
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  albums      Album[]
 }
 
 model Album {
