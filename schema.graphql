@@ -9,11 +9,12 @@ type Query {
 }
 
 type Artist {
-  id: ID!
+  id: Int!
   name: String!
   description: String
   albums: [Album!]!
   tracks: [Track!]!
+  userStars: Boolean
 }
 
 type Album {
@@ -36,8 +37,9 @@ type Track {
 type Mutation {
   signup(email: String!, password: String!, name: String!): User
   login(email: String!, password: String!): User
-  logout:String
+  logout: String
   createPlaylist: Playlist
+  addStar(id: Int!): String
 }
 
 type User {
@@ -45,6 +47,7 @@ type User {
   name: String!
   email: String!
   playlists: [Playlist!]!
+  stars: [Artist!]!
 }
 
 type Playlist {

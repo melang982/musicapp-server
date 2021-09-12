@@ -2,6 +2,22 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { APP_SECRET, getUserId, addToBlackList } = require('../utils')
 
+async function addStar(parent, args, context, info) {
+  const { userId } = context;
+  const user = await context.prisma.user.update({
+    where: { id: userId },
+    data: {
+      stars: {
+        connect: {
+          id: args.id
+        }
+      }
+    }
+  });
+
+  return 'success';
+}
+
 async function signup(parent, args, context, info) {
 
   const password = await bcrypt.hash(args.password, 10)
@@ -84,5 +100,6 @@ module.exports = {
   signup,
   login,
   logout,
-  createPlaylist
+  createPlaylist,
+  addStar
 }

@@ -23,11 +23,29 @@ async function tracks(parent, args, context) {
     }
   });
 
-
   return tracks;
+}
+
+async function userStars(parent, args, context) {
+  const { userId } = context;
+
+  if (userId) {
+    const stars = await context.prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    }).stars();
+
+    //console.log(stars);
+
+    return (stars.map((x) => x.id)).includes(parent.id);
+  }
+
+  return null;
 }
 
 module.exports = {
   albums,
-  tracks
+  tracks,
+  userStars
 }

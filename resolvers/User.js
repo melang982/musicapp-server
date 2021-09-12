@@ -6,7 +6,15 @@ function playlists(parent, args, context) {
   }).playlists()
 }
 
+function stars(parent, args, context) {
+  return context.prisma.user.findUnique({
+    where: {
+      id: parent.id
+    }
+  }).stars()
+}
 
 module.exports = {
-  playlists
+  playlists,
+  stars
 }

@@ -15,6 +15,7 @@ model Artist {
   name        String
   description String?
   albums      Album[]
+  users       User[]
 }
 
 model Album {
@@ -50,4 +51,5 @@ model User {
   email      String   @unique
   password   String
   playlists  Playlist[]
+  stars      Artist[]
 }
