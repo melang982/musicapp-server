@@ -18,6 +18,22 @@ async function addStar(parent, args, context, info) {
   return 'success';
 }
 
+async function removeStar(parent, args, context, info) {
+  const { userId } = context;
+  const user = await context.prisma.user.update({
+    where: { id: userId },
+    data: {
+      stars: {
+        disconnect: {
+          id: args.id
+        }
+      }
+    }
+  });
+
+  return 'success';
+}
+
 async function signup(parent, args, context, info) {
 
   const password = await bcrypt.hash(args.password, 10)
@@ -101,5 +117,6 @@ module.exports = {
   login,
   logout,
   createPlaylist,
-  addStar
+  addStar,
+  removeStar
 }
