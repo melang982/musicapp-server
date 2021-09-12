@@ -22,7 +22,7 @@ async function signup(parent, args, context, info) {
 }
 
 async function login(parent, args, context, info) {
-  console.log('LOGIN');
+  //console.log('LOGIN');
   const user = await context.prisma.user.findUnique({ where: { email: args.email } })
 
   if (!user) {
@@ -44,12 +44,12 @@ async function login(parent, args, context, info) {
   };
 
   const cookie = context.res.cookie('token', token, options);
-  console.log(user);
+  //console.log(user);
   return user;
 }
 
 function logout(parent, args, context, info) {
-  console.log('LOGOUT');
+  //console.log('LOGOUT');
   const token = context.cookies.token;
   if (token) addToBlackList(token);
 
@@ -64,7 +64,7 @@ function logout(parent, args, context, info) {
 }
 
 async function createPlaylist(parent, args, context, info) {
-  console.log('CREATE PLAYLIST');
+  //console.log('CREATE PLAYLIST');
   //console.log(context.cookies);
 
   const { userId } = context;

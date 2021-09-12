@@ -3,7 +3,7 @@ type Query {
   artist(id: Int!): Artist
   album(id: Int!): Album
   playlist(id: Int!): Playlist
-  user(name: String!): User
+  user: User
   albums(filter: String): [Album!]!
   tracks(filter: String): [Track!]!
 }
@@ -36,7 +36,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): User
   login(email: String!, password: String!): User
   logout:String
-  createPlaylist(title: String): Playlist
+  createPlaylist: Playlist
 }
 
 type User {
