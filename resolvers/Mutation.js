@@ -5,14 +5,10 @@ const { APP_SECRET, getUserId, addToBlackList } = require('../utils')
 async function addToPlaylist(parent, args, context, info) {
   const { userId } = context;
 
-  await context.prisma.playlist.update({
-    where: { id: args.playlistId },
+  await context.prisma.playlistTracks.create({
     data: {
-      tracks: {
-        connect: {
-          id: args.trackId
-        }
-      }
+      playlistId: args.playlistId,
+      trackId: args.trackId
     }
   });
 

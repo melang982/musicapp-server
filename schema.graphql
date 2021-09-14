@@ -55,6 +55,11 @@ type User {
 type Playlist {
   id: Int!
   title: String!
-  tracks: [Track!]!
+  tracks: [PlaylistTrack!]!
   createdBy: User
+}
+
+type PlaylistTrack {
+  track: Track!
+  assignedAt: String
 }

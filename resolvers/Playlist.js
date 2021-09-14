@@ -1,9 +1,10 @@
 function tracks(parent, args, context) {
-  return context.prisma.playlist.findUnique({
+
+  return context.prisma.playlistTracks.findMany({
     where: {
-      id: parent.id
+      playlistId: parent.id
     }
-  }).tracks()
+  });
 }
 
 function createdBy(parent, args, context) {

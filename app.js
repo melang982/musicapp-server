@@ -3,6 +3,7 @@ const Artist = require('./resolvers/Artist')
 const Album = require('./resolvers/Album')
 const Track = require('./resolvers/Track')
 const Playlist = require('./resolvers/Playlist')
+const PlaylistTrack = require('./resolvers/PlaylistTrack')
 const User = require('./resolvers/User')
 const Mutation = require('./resolvers/Mutation')
 
@@ -24,6 +25,7 @@ const resolvers = {
   Album,
   Track,
   Playlist,
+  PlaylistTrack,
   User,
   Mutation
 };

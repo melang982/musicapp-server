@@ -22,8 +22,8 @@ model Album {
   id         Int        @id @default(autoincrement())
   title      String
   year       Int?
-  artistId   Int
   artist     Artist       @relation(fields: [artistId], references: [id])
+  artistId   Int
   tracks     Track[]
   color      String?
 }
@@ -31,18 +31,28 @@ model Album {
 model Track {
   id         Int        @id @default(autoincrement())
   title      String
-  albumId    Int
   album      Album       @relation(fields: [albumId], references: [id])
+  albumId    Int
   duration   Int
-  playlists  Playlist[]
+  playlists  PlaylistTracks[]
 }
 
 model Playlist {
   id           Int        @id @default(autoincrement())
   title        String
-  tracks       Track[]
+  tracks       PlaylistTracks[]
   createdBy    User?    @relation(fields: [createdById], references: [id])
   createdById  Int?
+}
+
+model PlaylistTracks {
+  track      Track     @relation(fields: [trackId], references: [id])
+  trackId    Int
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+  assignedAt DateTime @default(now())
+
+  @@id([trackId, playlistId])
 }
 
 model User {
