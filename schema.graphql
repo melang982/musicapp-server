@@ -39,6 +39,7 @@ type Mutation {
   login(email: String!, password: String!): User
   logout: String
   createPlaylist: Playlist
+  addToPlaylist(playlistId: Int!, trackId: Int!): String
   addStar(id: Int!): String
   removeStar(id: Int!): String
 }
