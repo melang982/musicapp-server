@@ -6,6 +6,7 @@ type Query {
   user: User
   albums(filter: String): [Album!]!
   tracks(filter: String): [Track!]!
+  playlists(filter: String): [Playlist!]!
 }
 
 type Artist {

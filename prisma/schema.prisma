@@ -43,6 +43,7 @@ model Playlist {
   tracks       PlaylistTracks[]
   createdBy    User?    @relation(fields: [createdById], references: [id])
   createdById  Int?
+  tag          String?
 }
 
 model PlaylistTracks {

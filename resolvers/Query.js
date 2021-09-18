@@ -68,6 +68,17 @@ function playlist(parent, args, context) {
   })
 }
 
+function playlists(parent, args, context) {
+
+  const where = args.filter ? {
+    tag: args.filter
+  } : {};
+
+  return context.prisma.playlist.findMany({
+    where
+  })
+}
+
 function user(parent, args, context) {
   const { userId } = context;
 
@@ -87,5 +98,6 @@ module.exports = {
   playlist,
   user,
   albums,
-  tracks
+  tracks,
+  playlists
 }
