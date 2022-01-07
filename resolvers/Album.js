@@ -1,9 +1,13 @@
-function tracks(parent, args, context) {
-  return context.prisma.album.findUnique({
+async function tracks(parent, args, context) {
+  let tracks = await context.prisma.album.findUnique({
     where: {
       id: parent.id
     }
-  }).tracks()
+  }).tracks();
+
+  tracks = tracks.sort((a, b) => a.number - b.number);
+
+  return tracks;
 }
 
 function artist(parent, args, context) {

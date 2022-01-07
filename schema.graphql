@@ -33,6 +33,7 @@ type Track {
   duration: Int
   artist: Artist!
   album: Album!
+  number: Int
 }
 
 type Mutation {

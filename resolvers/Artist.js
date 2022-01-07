@@ -20,7 +20,8 @@ async function tracks(parent, args, context) {
       albumId: {
         in: albumIds
       }
-    }
+    },
+    take: 8
   });
 
   return tracks;

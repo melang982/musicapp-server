@@ -35,6 +35,7 @@ model Track {
   albumId    Int
   duration   Int
   playlists  PlaylistTracks[]
+  number     Int?
 }
 
 model Playlist {

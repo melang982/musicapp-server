@@ -71,9 +71,9 @@ async function startServer() {
     console.log('a user connected');
 
     const stream = ss.createStream();
-    client.on('track', (id) => {
-      console.log('track ' + id);
-      const fileName = id + '.wav';
+    client.on('track', (albumId, index) => {
+      console.log('album ' + albumId + ' track ' + index);
+      const fileName = albumId + '/' + index + '.wav';
       const filePath = path.resolve(__dirname, 'private', fileName);
 
       try {
