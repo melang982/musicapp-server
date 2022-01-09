@@ -95,8 +95,8 @@ async function startServer() {
     });
   });
 
-  server.listen(4000, () => {
-    console.log('listening on *:4000');
+  server.listen(5000, () => {
+    console.log('listening on *:5000');
   });
 }
 
