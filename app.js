@@ -18,6 +18,7 @@ const prisma = new PrismaClient()
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const resolvers = {
   Query,
@@ -32,6 +33,7 @@ const resolvers = {
 
 async function startServer() {
   const app = express();
+  app.use(compression());
   app.use(cookieParser());
 
   app.use(express.static('public'))
